@@ -7,12 +7,12 @@ from io import BytesIO
 app = Flask(__name__)
 
 # 모델 경로 및 클래스
-MODEL_PATH = "puppySenseModel_2025-06-01.keras"
+MODEL_PATH = "puppySenseModel_2025-06-04.keras"
 class_names = ['angry', 'happy', 'relaxed', 'sad']
 
 # 모델 로드
 model = tf.keras.models.load_model(MODEL_PATH)
-print("✅ 모델 로딩 완료")
+print("모델 로딩 완료")
 
 # 예측 API
 @app.route("/predict", methods=["POST"])
