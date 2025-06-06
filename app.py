@@ -81,9 +81,18 @@ def predict():
 
         # 예측
         prediction = model.predict(img_tensor)
+        
+        # 각 감정에 대한 확률을 퍼센트로 변환 (정수로 반올림)
+        emotion_percentages = {
+            'neutral': round(float(prediction[0][2] * 100)),  # relaxed를 neutral로 사용
+            'anger': round(float(prediction[0][0] * 100)),    # angry
+            'happiness': round(float(prediction[0][1] * 100)), # happy
+            'sadness': round(float(prediction[0][3] * 100))   # sad
+        }
+
+        # 가장 높은 확률의 감정 찾기
         pred_index = np.argmax(prediction)
         predicted_emotion = class_names[pred_index]
-        confidence = float(prediction[0][pred_index])
 
         # S3에 업로드
         image_file.seek(0)  # 파일 포인터를 처음으로 되돌림
@@ -91,7 +100,7 @@ def predict():
 
         return jsonify({
             "prediction": predicted_emotion,
-            "confidence": confidence,
+            "emotions": emotion_percentages,
             "image_url": s3_url
         })
 
